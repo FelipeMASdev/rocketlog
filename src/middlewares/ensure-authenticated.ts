@@ -9,7 +9,7 @@ interface TokenPayload {
   sub: string;
 }
 
-function ensureAuth(req: Request, res: Response, next: NextFunction) {
+function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
   try {
     const authHeader = req.headers.authorization;
 
@@ -32,3 +32,5 @@ function ensureAuth(req: Request, res: Response, next: NextFunction) {
     throw new AppError("Invalid JWT token", 401);
   }
 }
+
+export { ensureAuthenticated };
