@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.7.0",
   "engineVersion": "75cbdc1eb7150937890ad5465d861175c6624711",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum UserRole {\n  customer\n  sale\n}\n\nmodel User {\n  id       String @id @default(uuid())\n  name     String\n  email    String\n  password String\n\n  role UserRole @default(customer)\n\n  deliveries Delivery[]\n\n  createdAt DateTime  @default(now()) @map(\"created_at\")\n  updatedAt DateTime? @updatedAt @map(\"updated_at\")\n\n  @@map(\"users\")\n}\n\nenum DeliveryStatus {\n  processing\n  shipped\n  delivered\n}\n\nmodel Delivery {\n  id          String @id @default(uuid())\n  userId      String @map(\"user_id\")\n  description String\n\n  status DeliveryStatus @default(processing)\n\n  user User          @relation(fields: [userId], references: [id])\n  logs DeliveryLog[]\n\n  createdAt DateTime  @default(now()) @map(\"created_at\")\n  updatedAt DateTime? @updatedAt @map(\"updated_at\")\n\n  @@map(\"deliveries\")\n}\n\nmodel DeliveryLog {\n  id          String @id @default(uuid())\n  description String\n  deliveryId  String @map(\"delivery_id\")\n\n  delivery Delivery @relation(fields: [deliveryId], references: [id])\n\n  createdAt DateTime  @default(now()) @map(\"created_at\")\n  updatedAt DateTime? @updatedAt @map(\"updated_at\")\n\n  @@map(\"delivery_logs\")\n}\n",
+  "inlineSchema": "generator client {\n  provider     = \"prisma-client\"\n  output       = \"../src/prisma\"\n  moduleFormat = \"cjs\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum UserRole {\n  customer\n  sale\n}\n\nmodel User {\n  id       String @id @default(uuid())\n  name     String\n  email    String\n  password String\n\n  role UserRole @default(customer)\n\n  deliveries Delivery[]\n\n  createdAt DateTime  @default(now()) @map(\"created_at\")\n  updatedAt DateTime? @updatedAt @map(\"updated_at\")\n\n  @@map(\"users\")\n}\n\nenum DeliveryStatus {\n  processing\n  shipped\n  delivered\n}\n\nmodel Delivery {\n  id          String @id @default(uuid())\n  userId      String @map(\"user_id\")\n  description String\n\n  status DeliveryStatus @default(processing)\n\n  user User          @relation(fields: [userId], references: [id])\n  logs DeliveryLog[]\n\n  createdAt DateTime  @default(now()) @map(\"created_at\")\n  updatedAt DateTime? @updatedAt @map(\"updated_at\")\n\n  @@map(\"deliveries\")\n}\n\nmodel DeliveryLog {\n  id          String @id @default(uuid())\n  description String\n  deliveryId  String @map(\"delivery_id\")\n\n  delivery Delivery @relation(fields: [deliveryId], references: [id])\n\n  createdAt DateTime  @default(now()) @map(\"created_at\")\n  updatedAt DateTime? @updatedAt @map(\"updated_at\")\n\n  @@map(\"delivery_logs\")\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -45,10 +45,10 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.js"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.js")
     return await decodeBase64AsWasm(wasm)
   },
 

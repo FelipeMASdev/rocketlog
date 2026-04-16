@@ -13,5 +13,6 @@
 
     "strict": true,
     "skipLibCheck": true,
+    "types": ["jest"]
   }
 }
