@@ -2,9 +2,14 @@
   "name": "rocketlog",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "node --watch --env-file .env --import tsx src/server.ts",
-    "test:dev": "node --env-file .env ./node_modules/jest/bin/jest.js --watchAll --runInBand"
+    "test:dev": "node --env-file .env ./node_modules/jest/bin/jest.js --watchAll --runInBand",
+    "build": "tsup src --out-dir build",
+    "start": "node --env-file .env build/server.js"
   },
   "license": "ISC",
   "author": "Felipe Mendes",
@@ -31,6 +36,7 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
+    "tsup": "^8.3.0",
     "tsx": "^4.16.2",
     "typescript": "^5.5.4"
   }
